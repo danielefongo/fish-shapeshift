@@ -1,0 +1,58 @@
+function fish_dir() {
+    local last="$(print -P "%1~")"
+    local current="$(print -P "%~")"
+    local truncated="$(echo "${current%/*}/")"
+
+    folders=(${(s:/:)truncated})
+
+    truncated=""
+    for folder in $folders; do
+        truncated="$truncated${folder:0:1}/"
+    done
+
+    truncated=$(colorize "$truncated" $ZPURE_TRUNCATED_DIR_COLOR $ZPURE_TRUNCATED_DIR_BOLD)
+    last=$(colorize "$last" $ZPURE_LAST_FOLDER_DIR_COLOR $ZPURE_LAST_FOLDER_DIR_BOLD)
+
+    echo "$truncated$last"
+}
+
+function fish_symbol() {
+    echo "⋊>"
+}
+
+function on_branch() {
+    if [[ -z "$(async_git_branch)" ]]; then
+        return
+    fi
+    echo -n 'on '
+    async_git_branch
+}
+
+function fish_time() {
+    colorize "%*" 240 false
+}
+
+function git_dirty {
+    if [[ -z "$(async_git_branch)" ]]; then
+        return
+    fi
+
+    if [[ -z $(git status -s) ]]; then
+        echo "◦"
+    else
+        echo "⨯"
+    fi
+}
+
+PROMPT_LEFT_ELEMENTS=(fish_symbol fish_dir on_branch git_dirty)
+PROMPT_RIGHT_ELEMENTS=(fish_time)
+ZPURE_ARROW_OK_CHAR_BOLD=false
+ZPURE_ARROW_KO_CHAR_BOLD=false
+ZPURE_LAST_FOLDER_DIR_COLOR=yellow
+ZPURE_LAST_FOLDER_DIR_BOLD=false
+ZPURE_TRUNCATED_DIR_COLOR=yellow
+ZPURE_TRUNCATED_DIR_BOLD=false
+ZPURE_GIT_BRANCH_COLOR="green"
+ZPURE_GIT_BRANCH_BOLD=false
+ZPURE_GIT_AHEAD="⇡"
+ZPURE_GIT_BEHIND="⇣"
