@@ -1,0 +1,61 @@
+function fish_dir() {
+    local last="$(print -P "%1~")"
+    local current="$(print -P "%~")"
+    local truncated="$(echo "${current%/*}/")"
+
+    folders=(${(s:/:)truncated})
+
+    truncated=""
+    if [[ $last != "~" ]]; then
+        for folder in $folders; do
+            truncated="$truncated${folder:0:1}/"
+        done
+
+        truncated=$(colorize "$truncated" $SHAPESHIFT_TRUNCATED_DIR_COLOR $SHAPESHIFT_TRUNCATED_DIR_BOLD)
+    fi
+
+    last=$(colorize "$last" $SHAPESHIFT_LAST_FOLDER_DIR_COLOR $SHAPESHIFT_LAST_FOLDER_DIR_BOLD)
+
+    echo "$truncated$last"
+}
+
+function fish_symbol() {
+    echo "⋊>"
+}
+
+function on_branch() {
+    if [[ -z "$(async_git_branch)" ]]; then
+        return
+    fi
+    echo -n 'on '
+    async_git_branch
+}
+
+function fish_time() {
+    colorize "%*" 240 false
+}
+
+function git_dirty {
+    if [[ -z "$(async_git_branch)" ]]; then
+        return
+    fi
+
+    if [[ -z $(git status -s) ]]; then
+        echo "◦"
+    else
+        echo "⨯"
+    fi
+}
+
+SHAPESHIFT_PROMPT_LEFT_ELEMENTS=(fish_symbol fish_dir on_branch git_dirty)
+SHAPESHIFT_PROMPT_RIGHT_ELEMENTS=(fish_time)
+SHAPESHIFT_ARROW_OK_CHAR_BOLD=false
+SHAPESHIFT_ARROW_KO_CHAR_BOLD=false
+SHAPESHIFT_LAST_FOLDER_DIR_COLOR=yellow
+SHAPESHIFT_LAST_FOLDER_DIR_BOLD=false
+SHAPESHIFT_TRUNCATED_DIR_COLOR=yellow
+SHAPESHIFT_TRUNCATED_DIR_BOLD=false
+SHAPESHIFT_GIT_BRANCH_COLOR="green"
+SHAPESHIFT_GIT_BRANCH_BOLD=false
+SHAPESHIFT_GIT_AHEAD="⇡"
+SHAPESHIFT_GIT_BEHIND="⇣"
