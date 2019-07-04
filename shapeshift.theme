@@ -24,11 +24,11 @@ function fish_symbol() {
 }
 
 function on_branch() {
-    if [[ -z "$(async_git_branch)" ]]; then
+    if [[ -z "$(git_branch)" ]]; then
         return
     fi
     echo -n 'on '
-    async_git_branch
+    git_branch
 }
 
 function fish_time() {
@@ -36,7 +36,7 @@ function fish_time() {
 }
 
 function git_dirty {
-    if [[ -z "$(async_git_branch)" ]]; then
+    if [[ -z "$(git_branch)" ]]; then
         return
     fi
 
