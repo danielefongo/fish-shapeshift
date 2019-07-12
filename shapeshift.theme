@@ -49,6 +49,8 @@ function git_dirty {
 
 SHAPESHIFT_PROMPT_LEFT_ELEMENTS=(fish_symbol fish_dir on_branch git_dirty)
 SHAPESHIFT_PROMPT_RIGHT_ELEMENTS=(fish_time)
+SHAPESHIFT_LS_COLORS=(blue magenta green yellow red default default)
+SHAPESHIFT_LS_COLORS_ENABLED=true
 SHAPESHIFT_ARROW_OK_CHAR_BOLD=false
 SHAPESHIFT_ARROW_KO_CHAR_BOLD=false
 SHAPESHIFT_LAST_FOLDER_DIR_COLOR=yellow
