@@ -24,9 +24,8 @@ function fish_symbol() {
 }
 
 function on_branch() {
-    if [[ -z "$(git_branch)" ]]; then
-        return
-    fi
+    $SHAPESHIFT_IS_GIT_REPO || return 0
+
     echo -n 'on '
     git_branch
 }
@@ -36,9 +35,8 @@ function fish_time() {
 }
 
 function git_dirty {
-    if [[ -z "$(git_branch)" ]]; then
-        return
-    fi
+    $SHAPESHIFT_IS_GIT_REPO || return 0
+
 
     if [[ -z $(git status -s) ]]; then
         echo "◦"
